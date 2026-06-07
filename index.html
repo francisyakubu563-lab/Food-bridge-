@@ -52,6 +52,96 @@ footer { background: #2C3E50; color: white; text-align: center; padding: 20px; m
 <h2>Send Food to Anyone, Anywhere in Nigeria</h2>
 <p>Deposit food at any branch. Your family collects it at another branch. Simple, safe, reliable.</p>
 <a href="#deposit" class="btn">Get Started</a
+<div class="container">
+
+<div class="section">
+<h3>How It Works</h3>
+<p><strong>1. Deposit</strong> - Drop food + pay fee at any branch</p>
+<p><strong>2. Send</strong> - We generate a pickup code for your receiver</p>
+<p><strong>3. Collect</strong> - Receiver shows code + ID at their branch to collect food</p>
+<div class="fee-box">
+<strong>Transfer Fee:</strong> ₦1,500 flat fee per deposit + ₦200 per kg | ₦200 per carton of noodles<br>
+<strong>Example:</strong> 10kg Rice = ₦1,500 + ₦2,000 = ₦3,500 total
+</div>
+</div>
+
+<div class="section">
+<h3>Our Branches</h3>
+<div class="branches">
+<div class="branch-card">
+<h4>Lagos - Ikeja Branch</h4>
+<p>12 Obafemi Awolowo Way, Ikeja</p>
+<p>📞 08035623412</p>
+</div>
+<div class="branch-card">
+<h4>Kaduna - ABU Gate Branch</h4>
+<p>ABU Main Gate, Samaru, Zaria</p>
+<p>📞 08112354678</p>
+</div>
+<div class="branch-card">
+<h4>Abuja - Gwagwalada Branch</h4>
+<p>Phase 3, Gwagwalada</p>
+<p>📞 0923443456</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>Accepted Food Items - MVP</h3>
+<div class="food-list">
+<div class="food-item">Rice - per kg</div>
+<div class="food-item">Beans - per kg</div>
+<div class="food-item">Garri - per kg</div>
+<div class="food-item">Vegetable Oil - per liter</div>
+<div class="food-item">Packaged Noodles - per carton</div>
+</div>
+<p style="margin-top:15px; color:#666;">* No perishables yet. We’ll add cold storage in Phase 2.</p>
+</div>
+
+<div class="section" id="register">
+<h3>Register / Login</h3>
+<div id="loginForm">
+<input type="tel" id="phone" placeholder="Enter your phone number" required>
+<button class="btn" onclick="login()">Continue with OTP</button>
+<p style="margin-top:10px; font-size:14px; color:#666;">* For MVP demo, use OTP: 123456</p>
+</div>
+
+<div id="dashboard" class="dashboard">
+<div class="balance-box">
+<h4>Your Food Balance</h4>
+<p id="balanceText">No food deposits yet</p>
+</div>
+<h4>Recent Activity</h4>
+<p id="activityText">No transactions yet</p>
+</div>
+</div>
+
+</div>
+
+<footer>
+<p>&copy; 2026 FoodBridge Nigeria. All rights reserved.</p>
+<p>Built for students and families across Nigeria</p>
+</footer>
+
+<script>
+function login() {
+const phone = document.getElementById('phone').value;
+if(phone.length < 10) { alert('Please enter a valid phone number'); return; }
+const otp = prompt('Enter OTP code (use 123456 for demo): ');
+if(otp === '123456') {
+document.getElementById('loginForm').style.display = 'none';
+document.getElementById('dashboard').classList.add('active');
+document.getElementById('balanceText').innerText = '20kg Rice - Lagos Branch | 5kg Beans - Kaduna Branch';
+document.getElementById('activityText').innerText = 'Deposit: 20kg Rice on 05-May-2026 | Code: LAG-9X2K8';
+} else { alert('Invalid OTP. Use 123456 for demo'); }
+}
+</script>
+
+</body>
+</html>
+
+
+
 
 
 
