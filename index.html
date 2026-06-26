@@ -6,38 +6,32 @@
 <title>FoodBridge - Send Food Across Nigeria</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background: #f5f5f5; color: #333; }
-header { background: #E67E22; color: white; padding: 15px 20px; display: flex; align-items: center; gap: 15px; }
+body { background: #FFF8E1; color: #212121; } /* Warmer bg + darker text */
+header { background: #2E7D32; color: white; padding: 15px 20px; display: flex; align-items: center; gap: 15px; }
 header img { width: 50px; height: 50px; border-radius: 8px; }
 header h1 { font-size: 24px; }
-.hero { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #E67E22; color: white; text-align: center; padding: 60px 20px; }
+.hero { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #2E7D32; color: white; text-align: center; padding: 60px 20px; }
 .hero h2 { font-size: 32px; margin-bottom: 15px; }
 .hero p { font-size: 18px; margin-bottom: 25px; }
-.btn { background: #E67E22; color: white; padding: 12px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; text-decoration: none; display: inline-block; }
-.btn:hover { background: #d66d0f; }
-.btn-secondary { background: #7f8c8d; margin-left: 10px; }
-.btn-secondary:hover { background: #6c7a7d; }
-.btn-small { padding: 8px 15px; font-size: 14px; background: #27AE60; }
-.btn-small:hover { background: #229954; }
+.btn { background: #FF6F00; color: white; padding: 12px 30px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; text-decoration: none; display: inline-block; font-weight: 700; }
+.btn:hover { background: #E65100; }
 .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
 .section { background: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.section h3 { color: #E67E22; margin-bottom: 20px; font-size: 24px; }
+.section h3 { color: #2E7D32; margin-bottom: 20px; font-size: 24px; }
 .branches { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.branch-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; background: #fafafa; }
-.branch-card h4 { color: #27AE60; margin-bottom: 10px; }
-.fee-box { background: #FFF8E1; padding: 15px; border-left: 4px solid #E67E22; margin: 20px 0; }
+.branch-card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #fff; } /* White card, darker border */
+.branch-card h4 { color: #2E7D32; margin-bottom: 10px; font-size: 18px; }
+.branch-card p { color: #212121; font-size: 16px; line-height: 1.6; } /* FIXED: Dark text must show */
+.fee-box { background: #FFF8E1; padding: 15px; border-left: 4px solid #FF6F00; margin: 20px 0; }
 .food-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px; }
-.food-item { background: #E8F5E9; padding: 10px; border-radius: 5px; text-align: center; }
+.food-item { background: #E8F5E9; padding: 10px; border-radius: 5px; text-align: center; font-weight: 600; }
 input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 15px; }
-.result-box { background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; border-radius: 5px; margin-top: 15px; display: none; }
-.code { font-size: 24px; font-weight: bold; letter-spacing: 2px; color: #27AE60; margin-bottom: 10px; }
-.button-group { display: flex; gap: 10px; flex-wrap: wrap; }
-.code-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-footer { background: #2C3E50; color: white; text-align: center; padding: 20px; margin-top: 50px; }
+.dashboard { display: none; } /* FIXED: Hide by default */
+.dashboard.active { display: block; }
+footer { background: #1B5E20; color: white; text-align: center; padding: 30px 20px; margin-top: 50px; }
+footer h3 { margin-bottom: 10px; color: #FF6F00; }
 @media (max-width: 768px) { 
   .hero h2 { font-size: 24px; } 
-  .button-group { flex-direction: column; } 
-  .code-row { flex-direction: column; align-items: stretch; }
 }
 </style>
 </head>
@@ -51,7 +45,9 @@ footer { background: #2C3E50; color: white; text-align: center; padding: 20px; m
 <div class="hero">
 <h2>Send Food to Anyone, Anywhere in Nigeria</h2>
 <p>Deposit food at any branch. Your family collects it at another branch. Simple, safe, reliable.</p>
-<a href="#deposit" class="btn">Get Started</a
+<a href="#deposit" class="btn">Get Started</a> <!-- FIXED: > added -->
+</div> <!-- FIXED: hero closed -->
+
 <div class="container">
 
 <div class="section">
@@ -65,23 +61,23 @@ footer { background: #2C3E50; color: white; text-align: center; padding: 20px; m
 </div>
 </div>
 
-<div class="section">
-<h3>Our Branches</h3>
+<div class="section" id="contact"> <!-- FIXED: Contact section now has ID -->
+<h3>Our Branches - Contact Us</h3>
 <div class="branches">
 <div class="branch-card">
 <h4>Lagos - Ikeja Branch</h4>
 <p>12 Obafemi Awolowo Way, Ikeja</p>
-<p>📞 08035623412</p>
+<p><strong>📞 08035623412</strong></p> <!-- Bold = must show -->
 </div>
 <div class="branch-card">
 <h4>Kaduna - ABU Gate Branch</h4>
 <p>ABU Main Gate, Samaru, Zaria</p>
-<p>📞 08112354678</p>
+<p><strong>📞 08112354678</strong></p>
 </div>
 <div class="branch-card">
 <h4>Abuja - Gwagwalada Branch</h4>
 <p>Phase 3, Gwagwalada</p>
-<p>📞 0923443456</p>
+<p><strong>📞 0923443456</strong></p>
 </div>
 </div>
 </div>
@@ -95,7 +91,7 @@ footer { background: #2C3E50; color: white; text-align: center; padding: 20px; m
 <div class="food-item">Vegetable Oil - per liter</div>
 <div class="food-item">Packaged Noodles - per carton</div>
 </div>
-<p style="margin-top:15px; color:#666;">* No perishables yet. We’ll add cold storage in Phase 2.</p>
+<p style="margin-top:15px; color:#555;">* No perishables yet. We’ll add cold storage in Phase 2.</p>
 </div>
 
 <div class="section" id="register">
@@ -103,7 +99,7 @@ footer { background: #2C3E50; color: white; text-align: center; padding: 20px; m
 <div id="loginForm">
 <input type="tel" id="phone" placeholder="Enter your phone number" required>
 <button class="btn" onclick="login()">Continue with OTP</button>
-<p style="margin-top:10px; font-size:14px; color:#666;">* For MVP demo, use OTP: 123456</p>
+<p style="margin-top:10px; font-size:14px; color:#555;">* For MVP demo, use OTP: 123456</p>
 </div>
 
 <div id="dashboard" class="dashboard">
@@ -119,8 +115,9 @@ footer { background: #2C3E50; color: white; text-align: center; padding: 20px; m
 </div>
 
 <footer>
+<h3>Contact FoodBridge HQ</h3> <!-- FIXED: Extra contact point -->
+<p>WhatsApp/Call: 0803-562-3412 | Email: support@foodbridge.ng</p>
 <p>&copy; 2026 FoodBridge Nigeria. All rights reserved.</p>
-<p>Built for students and families across Nigeria</p>
 </footer>
 
 <script>
@@ -139,13 +136,3 @@ document.getElementById('activityText').innerText = 'Deposit: 20kg Rice on 05-Ma
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
