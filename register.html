@@ -5,19 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - FoodBridge</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background:#FFF8F3; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
-    .box { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:100%; max-width:350px; }
-    input { width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box; }
-    button { width:100%; padding:12px; background:#FF6B35; color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; }
+    body { font-family: 'Segoe UI', sans-serif; background:#FFF8F3; display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0; padding:20px; }
+    .box { background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:100%; max-width:380px; }
+    input, select { width:100%; padding:12px; margin:8px 0; border:1px solid #ddd; border-radius:8px; box-sizing:border-box; font-size:14px; }
+    button { width:100%; padding:12px; background:#FF6B35; color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-top:10px; }
+    label { font-weight:600; font-size:14px; margin-top:5px; display:block; }
     a { color:#FF6B35; text-decoration:none; }
   </style>
 </head>
 <body>
   <div class="box">
-    <h2 style="text-align:center;margin-top:0;">Create Account</h2>
+    <h2 style="text-align:center;margin-top:0;">Create FoodBridge Account</h2>
     <form id="signupForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password 6+ characters" required>
+      <label>Full Name</label>
+      <input type="text" id="fullname" placeholder="Francis Yakubu" required>
+      
+      <label>Email</label>
+      <input type="email" id="email" placeholder="you@gmail.com" required>
+      
+      <label>Phone</label>
+      <input type="tel" id="phone" placeholder="0803..." required>
+      
+      <label>City</label>
+      <input type="text" id="city" placeholder="Lagos, Abuja, PH" required>
+      
+      <label>I am a:</label>
+      <select id="role" required>
+        <option value="">Select role</option>
+        <option value="sender">Sender - I want to send food</option>
+        <option value="rider">Rider - I want to deliver</option>
+      </select>
+      
+      <label>Password</label>
+      <input type="password" id="password" placeholder="6+ characters" required>
+      
       <button type="submit">Sign Up</button>
     </form>
     <p style="text-align:center;margin-top:15px;">Already have an account? <a href="index.html">Home</a></p>
@@ -28,10 +49,23 @@
 
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
       e.preventDefault()
+      
       const email = document.getElementById('email').value
       const password = document.getElementById('password').value
+      const fullname = document.getElementById('fullname').value
+      const phone = document.getElementById('phone').value
+      const city = document.getElementById('city').value
+      const role = document.getElementById('role').value
 
-      const { data, error } = await supabase.auth.signUp({ email, password })
+      // 1. Create Auth User
+      const { data, error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          data: { fullname, phone, city, role } // saves to user_metadata
+        }
+      })
+      
       if (error) alert('Error: ' + error.message)
       else alert('Account created! Check your email to confirm.')
     })
