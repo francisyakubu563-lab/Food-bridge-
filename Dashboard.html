@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My FoodBridge</title>
+  <style>
+    body{font-family:Arial;background:#f4f4f4;margin:0;padding:0}
+    header{background:#2d6a4f;color:white;padding:15px 20px}
+    header h2{margin:0;font-size:18px}
+    .container{max-width:700px;margin:20px auto;padding:0 15px}
+    .card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:15px}
+    .card h3{margin:0 0 12px;color:#2d6a4f;font-size:16px}
+    .stats{display:flex;gap:10px;text-align:center}
+    .stat{flex:1;background:#e9f5ec;padding:12px;border-radius:10px}
+    .stat b{display:block;font-size:20px;color:#1b4332}
+    .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:15px 0}
+    .actions button{padding:14px;border:none;border-radius:10px;background:#2d6a4f;color:white;font-weight:bold;cursor:pointer}
+    .actions button:nth-child(2){background:#f77f00}
+    .actions button:nth-child(3){background:#457b9d}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:10px;border-bottom:1px solid #eee;text-align:left}
+    th{background:#f8f9fa;color:#555;font-weight:600}
+    .badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:bold}
+    .stored{background:#d1fae5;color:#065f46}
+    .withdrawn{background:#fee2e2;color:#991b1b}
+    .sent{background:#dbeafe;color:#1e40af}
+    .empty{color:#888;text-align:center;padding:20px}
+  </style>
+</head>
+<body>
+  <header>
+    <h2 id="welcome">FoodBridge Dashboard</h2>
+  </header>
+
+  <div class="container">
+    <!-- 1. SUMMARY CARDS FIRST -->
+    <div class="card">
+      <h3>Your Food Summary</h3>
+      <div class="stats">
+        <div class="stat"><b id="totalItems">0</b><span>Items Stored</span></div>
+        <div class="stat"><b id="totalSent">0</b><span>Sent Out</span></div>
+        <div class="stat"><b id="totalWithdrawn">0</b><span>Withdrawn</span></div>
+      </div>
+    </div>
+
+    <!-- 2. ACTION BUTTONS -->
+    <div class="actions">
+      <button onclick="location.href='deposit.html'">Deposit</button>
+      <button onclick="location.href='withdraw.html'">Withdraw</button>
+      <button onclick="location.href='send.html'">Send to Somebody</button>
+    </div>
+
+    <!-- 3. RECORD OF ACTIVITIES / HISTORY -->
+    <div class="card">
+      <h3>Record of Activities</h3>
+      <table>
+        <thead><tr><th>Date</th><th>Item</th><th>Qty</th><th>Tracking ID</th><th>Status</th></tr></thead>
+        <tbody id="historyBody"><tr><td colspan="5" class="empty">No activities yet</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    const SUPABASE_URL = 'https://xtahxmjhzvnzeveugxcs.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0YWh4bWpienZuemV2ZXVneGNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxMjk2NzAsImV4cCI6MjA3MzcwNTY3MH0.YxSeDaiEEatDvMYc_m_2Pht4Px7kwJgPd3G1qNkpd3o'
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    const profile = JSON.parse(localStorage.getItem('foodbridge_profile') || '{}');
+    document.getElementById('welcome').textContent = `Welcome, ${profile.fullname || 'User'} 👋`;
+
+    const { data: { user } = await supabase.auth.getUser();
+    if(!user){ window.location.href = 'register.html'; }
+
+    // Fetch all activities for this user
+    const { data: activities } = await supabase
+      .from('food_deposits')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    let stored = 0, sent = 0, withdrawn = 0;
+    const historyBody = document.getElementById('historyBody');
+
+    if(activities && activities.length > 0){
+      historyBody.innerHTML = activities.map(a => {
+        if(a.status === 'Stored') stored += Number(a.quantity || 1);
+        if(a.status === 'Sent') sent += 1;
+        if(a.status === 'Withdrawn') withdrawn += 1;
+
+        const badgeClass = a.status === 'Stored' ? 'stored' : a.status === 'Sent' ? 'sent' : 'withdrawn';
+        return `
+          <tr>
+            <td>${new Date(a.created_at).toLocaleDateString()}</td>
+            <td>${a.item_name}</td>
+            <td>${a.quantity} ${a.unit}</td>
+            <td>${a.tracking_id}</td>
+            <td><span class="badge ${badgeClass}">${a.status}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('totalItems').textContent = stored;
+    document.getElementById('totalSent').textContent = sent;
+    document.getElementById('totalWithdrawn').textContent = withdrawn;
+
+  </script>
+</body>
+</html>
